@@ -1,4 +1,7 @@
 using MeetingRoomReservation.Api.Database;
+using MeetingRoomReservation.Api.Handlers;
+using MeetingRoomReservation.Api.Interfaces;
+using MeetingRoomReservation.Api.Profiles;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUserHandler, UserHandler>();
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<UserProfile>();
+});
 
 var app = builder.Build();
 
