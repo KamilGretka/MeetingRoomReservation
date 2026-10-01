@@ -4,8 +4,14 @@ namespace MeetingRoomReservation.Api.Interfaces
 {
     public interface IUserHandler
     {
-       Task<UserDto?> GetUserByIdAsync(Guid Id); 
+        Task<IEnumerable<UserDto>?> GetUsersAsync();
 
-       Task<UserDto> AddUserAsync(CreateUserDto createUserDto);
+        Task<UserDto?> GetUserByIdAsync(Guid Id);
+
+        Task<UserDto> CreateUserAsync(CreateUserDto createUserDto);
+
+        Task<UserDto?> UpdateUserAsync(UpdateUserDto updateUserDto);
+
+        Task<bool> DeleteUserAsync(Guid Id);
     }
 }

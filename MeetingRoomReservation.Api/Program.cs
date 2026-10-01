@@ -34,6 +34,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseRouting();
 
 app.UseSwagger();
 app.UseSwaggerUI();

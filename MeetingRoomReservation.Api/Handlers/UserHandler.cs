@@ -45,8 +45,22 @@ namespace MeetingRoomReservation.Api.Handlers
             };
         }
 
-        //todo add validation
-        public async Task<UserDto> AddUserAsync(CreateUserDto createUserDto)
+        public Task<IEnumerable<UserDto>?> GetUsersAsync()
+        {
+            var users = _dbContext.Users
+                .Select(x => new UserDto
+                {
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Id = x.Id,
+                    Email = x.Email
+                })
+                .ToList();
+
+            return users.AsEnumerable<UserDto?>() is null ? Task.FromResult<IEnumerable<UserDto>?>(null) : Task.FromResult<IEnumerable<UserDto>?>(users);
+        }
+
+        public async Task<UserDto> CreateUserAsync(CreateUserDto createUserDto)
         {
             var user = _mapper.Map<User>(createUserDto);
 
@@ -57,6 +71,38 @@ namespace MeetingRoomReservation.Api.Handlers
             await _dbContext.SaveChangesAsync();
 
             return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<UserDto?> UpdateUserAsync(UpdateUserDto updateUserDto)
+        {
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == updateUserDto.Id);
+
+            if (user is null)
+                return null;
+
+            user.FirstName = updateUserDto.FirstName;
+            user.LastName = updateUserDto.LastName;
+            user.Email = updateUserDto.Email;
+
+            await _dbContext.SaveChangesAsync();
+
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<bool> DeleteUserAsync(Guid Id)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == Id);
+
+            if(user == null)
+            {
+                return false;
+            }
+
+            _dbContext.Remove(user);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

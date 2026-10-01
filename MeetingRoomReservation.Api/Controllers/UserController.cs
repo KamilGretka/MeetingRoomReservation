@@ -15,10 +15,23 @@ namespace MeetingRoomReservation.Api.Controllers
             _userhandler = userHandler;
         }
 
+
+        [HttpGet]
+        [Route("GetUsers")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _userhandler.GetUsersAsync();
+
+            if (users == null || !users.Any())
+                return NotFound();
+
+            return Ok(users);
+        }
+
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetUserById(Guid Id)
         {
-           var user = await _userhandler.GetUserByIdAsync(Id);
+            var user = await _userhandler.GetUserByIdAsync(Id);
 
             if (user is null)
                 return NotFound();
@@ -29,11 +42,31 @@ namespace MeetingRoomReservation.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUserAsync(CreateUserDto createUserDto)
         {
-            var user = await _userhandler.AddUserAsync(createUserDto);
-
-            //TODO add some validation if that user already exists
+            var user = await _userhandler.CreateUserAsync(createUserDto);
 
             return CreatedAtAction(nameof(GetUserById), new { user.Id }, user);
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteUserAsync(Guid Id)
+        {
+            var result = await _userhandler.DeleteUserAsync(Id);
+
+            if (!result)
+                return NotFound();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{Id}")]
+        public async Task<IActionResult> UpdateUserAsync(UpdateUserDto updateUserDto)
+        {
+            var result = await _userhandler.UpdateUserAsync(updateUserDto);
+
+            if (result is null)
+                return NotFound();
+
+            return Ok();
         }
     }
 }

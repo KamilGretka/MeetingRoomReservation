@@ -10,6 +10,8 @@ namespace MeetingRoomReservation.Api.Profiles
         {
             CreateMap<CreateUserDto, User>();
             CreateMap<User, UserDto>();
+
+            CreateMap<UpdateUserDto, User>();
         }
     }
 }
