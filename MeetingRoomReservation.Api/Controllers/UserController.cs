@@ -1,4 +1,6 @@
-﻿using MeetingRoomReservation.Api.Interfaces;
+﻿using MediatR;
+using MeetingRoomReservation.Api.Commands;
+using MeetingRoomReservation.Api.Queries;
 using MeetingRoomReservation.Domain.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,19 +10,18 @@ namespace MeetingRoomReservation.Api.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly IUserHandler _userhandler;
+        private readonly IMediator _mediator;
 
-        public UserController(IUserHandler userHandler)
+        public UserController(IMediator mediator)
         {
-            _userhandler = userHandler;
+            _mediator = mediator;
         }
-
 
         [HttpGet]
         [Route("GetUsers")]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
         {
-            var users = await _userhandler.GetUsersAsync();
+            var users = await _mediator.Send(new GetUsersQuery(), cancellationToken);
 
             if (users == null || !users.Any())
                 return NotFound();
@@ -29,9 +30,9 @@ namespace MeetingRoomReservation.Api.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetUserById(Guid Id)
+        public async Task<IActionResult> GetUserById(Guid Id, CancellationToken cancellationToken)
         {
-            var user = await _userhandler.GetUserByIdAsync(Id);
+            var user = await _mediator.Send(new GetUserByIdQuery(Id), cancellationToken);
 
             if (user is null)
                 return NotFound();
@@ -40,17 +41,17 @@ namespace MeetingRoomReservation.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUserAsync(CreateUserDto createUserDto)
+        public async Task<IActionResult> AddUserAsync(CreateUserDto createUserDto, CancellationToken cancellationToken)
         {
-            var user = await _userhandler.CreateUserAsync(createUserDto);
+            var user = await _mediator.Send(new CreateUserCommand(createUserDto), cancellationToken);
 
-            return CreatedAtAction(nameof(GetUserById), new { user.Id }, user);
+            return CreatedAtAction(nameof(GetUserById), user);
         }
 
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteUserAsync(Guid Id)
         {
-            var result = await _userhandler.DeleteUserAsync(Id);
+            var result = await _mediator.Send(new DeleteUserCommand(Id));
 
             if (!result)
                 return NotFound();
@@ -58,15 +59,15 @@ namespace MeetingRoomReservation.Api.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{Id}")]
+        [HttpPatch]
         public async Task<IActionResult> UpdateUserAsync(UpdateUserDto updateUserDto)
         {
-            var result = await _userhandler.UpdateUserAsync(updateUserDto);
+            var result = await _mediator.Send(new UpdateUserCommand(updateUserDto));
 
             if (result is null)
                 return NotFound();
 
-            return Ok();
+            return Ok(result);
         }
     }
 }

@@ -9,9 +9,8 @@ namespace MeetingRoomReservation.Api.Profiles
         public UserProfile()
         {
             CreateMap<CreateUserDto, User>();
-            CreateMap<User, UserDto>();
 
-            CreateMap<UpdateUserDto, User>();
+            CreateMap<User, UpdateUserDto>();
         }
     }
 }
