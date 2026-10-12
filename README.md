@@ -13,7 +13,6 @@ The application is organized into separate modules responsible for API communica
 The solution also includes a dedicated test project for verifying application functionality.
 
 🛠️ Technologies
-```text
 C#
 .NET 10
 ASP.NET Core Web API
@@ -25,6 +24,8 @@ FluentValidation
 Swagger / OpenAPI
 xUnit / .NET testing tools
 Git / GitHub
+
+```text
 🧩 Project Structure
 MeetingRoomReservation/
 │
