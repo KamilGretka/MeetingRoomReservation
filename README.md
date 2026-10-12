@@ -13,6 +13,7 @@ The application is organized into separate modules responsible for API communica
 The solution also includes a dedicated test project for verifying application functionality.
 
 🛠️ Technologies
+```text
 C#
 .NET 10
 ASP.NET Core Web API
@@ -35,6 +36,7 @@ MeetingRoomReservation/
 ├── MeetingRoomReservation.Api.slnx        # Solution file
 ├── .gitignore
 └── .gitattributes
+```
 
 🚀 Getting Started
 Clone the repository:
