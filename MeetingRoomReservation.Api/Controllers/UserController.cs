@@ -45,7 +45,7 @@ namespace MeetingRoomReservation.Api.Controllers
         {
             var user = await _mediator.Send(new CreateUserCommand(createUserDto), cancellationToken);
 
-            return CreatedAtAction(nameof(GetUserById), user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user }, user);
         }
 
         [HttpDelete("{Id}")]
