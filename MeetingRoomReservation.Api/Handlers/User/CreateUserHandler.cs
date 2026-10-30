@@ -21,7 +21,7 @@ namespace MeetingRoomReservation.Api.Handlers.User
             var user = _mapper.Map<Domain.Models.User>(request.CreateUserDto);
 
             user.Id = Guid.NewGuid();
-            user.HashedPassword = request.CreateUserDto.Password; //TODO
+            user.Password = request.CreateUserDto.Password; //TODO make password hashing
                 
             await _dbContext.Users.AddAsync(user, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);

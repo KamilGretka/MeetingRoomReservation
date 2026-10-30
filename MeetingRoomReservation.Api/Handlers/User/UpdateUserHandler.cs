@@ -26,10 +26,10 @@ namespace MeetingRoomReservation.Api.Handlers.User
             if (user is null)
                 return null;
 
-            user.FirstName = request.UpdateUserDto.FirstName;
-            user.LastName = request.UpdateUserDto.LastName;
-            user.Email = request.UpdateUserDto.Email;
-            user.HashedPassword = request.UpdateUserDto.HashedPassword;
+            user.FirstName = request.UpdateUserDto.FirstName == null ? user.FirstName : request.UpdateUserDto.FirstName;
+            user.LastName = request.UpdateUserDto.LastName == null ? user.LastName : request.UpdateUserDto.LastName;
+            user.Email = request.UpdateUserDto.Email == null ? user.Email : request.UpdateUserDto.Email;
+            user.Password = request.UpdateUserDto.Password == null ? user.Password : request.UpdateUserDto.Password; //TODO make password hashing
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

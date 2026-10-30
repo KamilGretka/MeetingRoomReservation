@@ -41,7 +41,7 @@ namespace MeetingRoomReservation.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUserAsync(CreateUserDto createUserDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateUserAsync(CreateUserDto createUserDto, CancellationToken cancellationToken)
         {
             var user = await _mediator.Send(new CreateUserCommand(createUserDto), cancellationToken);
 
