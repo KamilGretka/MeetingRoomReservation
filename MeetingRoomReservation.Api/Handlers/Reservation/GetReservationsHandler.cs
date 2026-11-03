@@ -23,7 +23,7 @@ namespace MeetingRoomReservation.Api.Handlers.Reservation
                Id = x.Id,
                StartTime = x.StartTime,
                 EndTime = x.EndTime,
-                Title = x.Title,
+                Title = x.Description,
                 User = new Domain.Models.User
                 {
                     Id = x.User.Id,

@@ -14,21 +14,6 @@ namespace MeetingRoomReservation.Api.Handlers.User
             _dbContext = dbContext;
         }
 
-        public async Task<bool> DeleteUserAsync(Guid Id)
-        {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == Id);
-
-            if (user == null)
-            {
-                return false;
-            }
-
-            _dbContext.Remove(user);
-            await _dbContext.SaveChangesAsync();
-
-            return true;
-        }
-
         public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
@@ -39,7 +24,7 @@ namespace MeetingRoomReservation.Api.Handlers.User
             }
 
             _dbContext.Remove(user);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return true;
         }

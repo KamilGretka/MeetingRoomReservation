@@ -35,13 +35,7 @@ namespace MeetingRoomReservation.Api.Handlers.User
                 return null;
             }
 
-            return new UserDto
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Id = user.Id,
-                Email = user.Email
-            };
+            return user;
         }
     }
 }

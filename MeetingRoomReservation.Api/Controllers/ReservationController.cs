@@ -19,7 +19,7 @@ namespace MeetingRoomReservation.Api.Controllers
 
         [HttpGet]
         [Route("GetReservations")]
-        public async Task<IActionResult> GetReservations(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetReservationsAsync(CancellationToken cancellationToken)
         {
             var reservations = await _mediator.Send(new GetReservationsQuery(), cancellationToken);
 
@@ -31,7 +31,7 @@ namespace MeetingRoomReservation.Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetReservationById(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetReservationByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var reservation = await _mediator.Send(new GetReservationByIdQuery(id), cancellationToken);
 
@@ -42,16 +42,16 @@ namespace MeetingRoomReservation.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateReservation(CreateReservationDto createReservationDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateReservationAsync(CreateReservationDto createReservationDto, CancellationToken cancellationToken)
         {
             var reservation = await _mediator.Send(new CreateReservationCommand(createReservationDto), cancellationToken);
 
-            return CreatedAtAction(nameof(GetReservationById), new { id = reservation }, reservation);
+            return CreatedAtAction(nameof(GetReservationByIdAsync), new { id = reservation }, reservation);
         }
 
         [HttpPatch]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateReservation(Guid id, UpdateReservationDto updateReservationDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateReservationAsync(Guid id, UpdateReservationDto updateReservationDto, CancellationToken cancellationToken)
         {
             var reservation = await _mediator.Send(new UpdateReservationCommand(id, updateReservationDto), cancellationToken);
 
@@ -66,6 +66,18 @@ namespace MeetingRoomReservation.Api.Controllers
         public async Task<IActionResult> DeleteReservationAsync(Guid id)
         {
             var result = await _mediator.Send(new DeleteReservationCommand(id));
+
+            if (!result)
+                return NotFound();
+
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("CheckRoomAvailability")]
+        public async Task<IActionResult> CheckRoomAvailabilityAsync(DateTime startTime, DateTime endTime)
+        {
+            var result = await _mediator.Send(new CheckRoomAvailabilityQuery(startTime, endTime));
 
             if (!result)
                 return NotFound();
