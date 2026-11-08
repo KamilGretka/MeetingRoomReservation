@@ -1,6 +1,7 @@
 using FluentValidation;
 using MeetingRoomReservation.Api.Database;
 using MeetingRoomReservation.Api.Exceptions;
+using MeetingRoomReservation.Api.Handlers.Reservation;
 using MeetingRoomReservation.Api.Handlers.User;
 using MeetingRoomReservation.Api.Profiles;
 using MeetingRoomReservation.Api.Validation;
@@ -22,6 +23,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg =>
 { 
     cfg.RegisterServicesFromAssembly(typeof(GetUsersHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetReservationsHandler).Assembly);
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 

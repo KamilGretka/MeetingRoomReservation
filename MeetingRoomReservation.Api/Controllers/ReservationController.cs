@@ -12,7 +12,7 @@ namespace MeetingRoomReservation.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public ReservationController(Mediator mediator)
+        public ReservationController(IMediator mediator)
         {
             _mediator = mediator;
         }
