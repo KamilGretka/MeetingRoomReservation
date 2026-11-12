@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MeetingRoomReservation.Api.Commands;
 
-namespace MeetingRoomReservation.Api.Validators
+namespace MeetingRoomReservation.Api.Validation.Validators
 {
     public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {

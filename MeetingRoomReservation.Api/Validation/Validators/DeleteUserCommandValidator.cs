@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MeetingRoomReservation.Api.Commands;
 
-namespace MeetingRoomReservation.Api.Validation
+namespace MeetingRoomReservation.Api.Validation.Validators
 {
     public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
     {

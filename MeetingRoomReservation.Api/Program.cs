@@ -5,7 +5,7 @@ using MeetingRoomReservation.Api.Handlers.Reservation;
 using MeetingRoomReservation.Api.Handlers.User;
 using MeetingRoomReservation.Api.Profiles;
 using MeetingRoomReservation.Api.Validation;
-using MeetingRoomReservation.Api.Validators;
+using MeetingRoomReservation.Api.Validation.Validators;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
