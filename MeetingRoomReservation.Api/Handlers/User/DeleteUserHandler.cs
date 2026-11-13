@@ -1,30 +1,28 @@
 ﻿using MediatR;
 using MeetingRoomReservation.Api.Commands;
-using MeetingRoomReservation.Api.Database;
-using Microsoft.EntityFrameworkCore;
+using MeetingRoomReservation.Domain.Interfaces;
 
 namespace MeetingRoomReservation.Api.Handlers.User
 {
     public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, bool>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
 
-        public DeleteUserHandler(AppDbContext dbContext)
+        public DeleteUserHandler(IUserRepository userRepository)
         {
-            _dbContext = dbContext;
+            _userRepository = userRepository;
         }
 
         public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (user == null)
             {
                 return false;
             }
 
-            _dbContext.Remove(user);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _userRepository.DeleteAsync(user, cancellationToken);
 
             return true;
         }

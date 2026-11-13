@@ -1,32 +1,30 @@
 ﻿using MediatR;
-using MeetingRoomReservation.Api.Database;
 using MeetingRoomReservation.Api.Queries;
 using MeetingRoomReservation.Domain.Dto;
-using Microsoft.EntityFrameworkCore;
+using MeetingRoomReservation.Domain.Interfaces;
 
 namespace MeetingRoomReservation.Api.Handlers.User
 {
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, IEnumerable<UserDto>>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
 
-        public GetUsersHandler(AppDbContext dbContext)
+        public GetUsersHandler(IUserRepository userRepository)
         {
-            _dbContext = dbContext;
+            _userRepository = userRepository;
         }
 
         public async Task<IEnumerable<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _dbContext.Users
-                        .Select(x => new UserDto
-                        {
-                            FirstName = x.FirstName,
-                            LastName = x.LastName,
-                            Id = x.Id,
-                            Email = x.Email
-                        }).ToListAsync(cancellationToken);
+            var users = await _userRepository.GetAllAsync(cancellationToken);
 
-            return users;
+            return users.Select(user => new UserDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.Id,
+                Email = user.Email
+            }).ToList();
         }
     }
 }

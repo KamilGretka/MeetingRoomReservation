@@ -1,30 +1,30 @@
 ﻿using AutoMapper;
 using MediatR;
 using MeetingRoomReservation.Api.Commands;
-using MeetingRoomReservation.Api.Database;
+using MeetingRoomReservation.Domain.Interfaces;
+using UserModel = MeetingRoomReservation.Domain.Models.User;
 
 namespace MeetingRoomReservation.Api.Handlers.User
 {
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, Guid>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public CreateUserHandler(AppDbContext dbContext, IMapper mapper )
+        public CreateUserHandler(IUserRepository userRepository, IMapper mapper)
         {
-            _dbContext = dbContext;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = _mapper.Map<Domain.Models.User>(request.CreateUserDto);
+            var user = _mapper.Map<UserModel>(request.CreateUserDto);
 
             user.Id = Guid.NewGuid();
             user.Password = request.CreateUserDto.Password; //TODO make password hashing
                 
-            await _dbContext.Users.AddAsync(user, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _userRepository.AddAsync(user, cancellationToken);
 
             return user.Id;
         }
