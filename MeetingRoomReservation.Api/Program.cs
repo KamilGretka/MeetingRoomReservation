@@ -35,6 +35,18 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<UserProfile>();
 });
 
+builder.Services
+    .AddIdentityCore<MeetingRoomReservation.Domain.Models.User>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+    })
+    .AddEntityFrameworkStores<AppDbContext>();
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 

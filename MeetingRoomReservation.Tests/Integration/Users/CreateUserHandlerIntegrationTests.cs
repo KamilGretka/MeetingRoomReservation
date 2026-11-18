@@ -4,9 +4,11 @@ using MeetingRoomReservation.Api.Database;
 using MeetingRoomReservation.Api.Handlers.User;
 using MeetingRoomReservation.Api.Profiles;
 using MeetingRoomReservation.Domain.Dto;
-using MeetingRoomReservation.Infrastructure.Repositories;
+using MeetingRoomReservation.Domain.Models;
 using MeetingRoomReservation.Tests.Common;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace MeetingRoomReservation.Tests.Integration.Users
@@ -28,13 +30,15 @@ namespace MeetingRoomReservation.Tests.Integration.Users
                 FirstName = "Ada",
                 LastName = "Lovelace",
                 Email = "ada.lovelace@example.com",
-                Password = "test-password"
+                Password = "Test-password1"
             };
 
             await using var dbContext = new AppDbContext(options);
             await using var transaction = await dbContext.Database.BeginTransactionAsync();
+            using var services = IdentityTestServices.CreateProvider(dbContext);
+            var userManager = services.GetRequiredService<UserManager<User>>();
 
-            var handler = new CreateUserHandler(new UserRepository(dbContext), mapper);
+            var handler = new CreateUserHandler(mapper, userManager);
             var userId = await handler.Handle(
                 new CreateUserCommand(createUserDto),
                 CancellationToken.None);
@@ -48,7 +52,8 @@ namespace MeetingRoomReservation.Tests.Integration.Users
             Assert.Equal(createUserDto.FirstName, user.FirstName);
             Assert.Equal(createUserDto.LastName, user.LastName);
             Assert.Equal(createUserDto.Email, user.Email);
-            Assert.Equal(createUserDto.Password, user.Password);
+            Assert.NotNull(user.PasswordHash);
+            Assert.NotEqual(createUserDto.Password, user.PasswordHash);
 
             await transaction.RollbackAsync();
         }

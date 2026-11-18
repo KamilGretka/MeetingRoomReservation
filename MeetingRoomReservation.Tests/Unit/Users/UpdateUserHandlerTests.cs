@@ -29,8 +29,7 @@ namespace MeetingRoomReservation.Tests.Unit.Users
                 Id = user.Id,
                 FirstName = "Augusta",
                 LastName = null,
-                Email = "augusta.lovelace@example.com",
-                Password = null
+                Email = "augusta.lovelace@example.com"
             };
 
             var result = await handler.Handle(new UpdateUserCommand(updateUserDto), CancellationToken.None);
@@ -40,7 +39,7 @@ namespace MeetingRoomReservation.Tests.Unit.Users
             Assert.Equal("Augusta", result.FirstName);
             Assert.Equal("Lovelace", result.LastName);
             Assert.Equal("augusta.lovelace@example.com", result.Email);
-            Assert.Equal("test-password", user.Password);
+            Assert.Equal("existing-password-hash", user.PasswordHash);
             repository.Verify(
                 userRepository => userRepository.UpdateAsync(user, It.IsAny<CancellationToken>()),
                 Times.Once);
@@ -81,7 +80,10 @@ namespace MeetingRoomReservation.Tests.Unit.Users
                 FirstName = "Ada",
                 LastName = "Lovelace",
                 Email = "ada.lovelace@example.com",
-                Password = "test-password"
+                UserName = "ada.lovelace@example.com",
+                NormalizedUserName = "ADA.LOVELACE@EXAMPLE.COM",
+                NormalizedEmail = "ADA.LOVELACE@EXAMPLE.COM",
+                PasswordHash = "existing-password-hash"
             };
         }
     }

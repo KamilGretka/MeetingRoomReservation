@@ -1,11 +1,11 @@
-﻿namespace MeetingRoomReservation.Domain.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace MeetingRoomReservation.Domain.Models
 {
-    public class User
+    public class User : IdentityUser<Guid>
     {
-        public Guid Id { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
-        public required string Email { get; set; }
-        public required string Password { get; set; }
+        public override string Email { get; set; } = string.Empty;
     }
 }

@@ -27,10 +27,6 @@ namespace MeetingRoomReservation.Api.Validation.Validators
                 .MaximumLength(100)
                 .When(x => x.UpdateUserDto.Email != null);
 
-            RuleFor(x => x.UpdateUserDto.Password)
-                .MinimumLength(8)
-                .MaximumLength(100)
-                .When(x => x.UpdateUserDto.Password != null);
         }
     }
 }

@@ -53,7 +53,9 @@ namespace MeetingRoomReservation.Tests.Component.Users
                 FirstName = "Ada",
                 LastName = "Lovelace",
                 Email = "ada.lovelace@example.com",
-                Password = "test-password"
+                UserName = "ada.lovelace@example.com",
+                NormalizedUserName = "ADA.LOVELACE@EXAMPLE.COM",
+                NormalizedEmail = "ADA.LOVELACE@EXAMPLE.COM"
             };
         }
     }

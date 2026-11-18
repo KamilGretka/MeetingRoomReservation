@@ -24,15 +24,14 @@ namespace MeetingRoomReservation.Api.Handlers.Reservation
                StartTime = x.StartTime,
                 EndTime = x.EndTime,
                 Title = x.Description,
-                User = new Domain.Models.User
+                 User = new UserDto
                 {
                     Id = x.User.Id,
                     FirstName = x.User.FirstName,
                     LastName = x.User.LastName,
-                    Email = x.User.Email,
-                    Password = x.User.Password
+                    Email = x.User.Email
                 },
-                Room = new Domain.Models.MeetingRoom
+                 Room = new MeetingRoomDto
                 {
                     Id = x.Room.Id,
                     Name = x.Room.Name,

@@ -25,8 +25,7 @@ namespace MeetingRoomReservation.Tests.Component.Users
                 Id = user.Id,
                 FirstName = "Augusta",
                 LastName = null,
-                Email = "augusta.lovelace@example.com",
-                Password = null
+                Email = "augusta.lovelace@example.com"
             };
             var handler = new UpdateUserHandler(new UserRepository(dbContext), CreateMapper());
 
@@ -43,7 +42,7 @@ namespace MeetingRoomReservation.Tests.Component.Users
             Assert.Equal("Augusta", persistedUser.FirstName);
             Assert.Equal("Lovelace", persistedUser.LastName);
             Assert.Equal("augusta.lovelace@example.com", persistedUser.Email);
-            Assert.Equal("test-password", persistedUser.Password);
+            Assert.Equal("existing-password-hash", persistedUser.PasswordHash);
         }
 
         [Fact]
@@ -85,7 +84,10 @@ namespace MeetingRoomReservation.Tests.Component.Users
                 FirstName = "Ada",
                 LastName = "Lovelace",
                 Email = "ada.lovelace@example.com",
-                Password = "test-password"
+                UserName = "ada.lovelace@example.com",
+                NormalizedUserName = "ADA.LOVELACE@EXAMPLE.COM",
+                NormalizedEmail = "ADA.LOVELACE@EXAMPLE.COM",
+                PasswordHash = "existing-password-hash"
             };
         }
     }

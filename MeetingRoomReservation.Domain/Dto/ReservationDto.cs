@@ -1,6 +1,4 @@
-﻿using MeetingRoomReservation.Domain.Models;
-
-namespace MeetingRoomReservation.Domain.Dto
+﻿namespace MeetingRoomReservation.Domain.Dto
 {
     public class ReservationDto
     {
@@ -8,7 +6,7 @@ namespace MeetingRoomReservation.Domain.Dto
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string? Title { get; set; }
-        public User User { get; set; } = null!;
-        public MeetingRoom Room { get; set; } = null!;
+        public UserDto User { get; set; } = null!;
+        public MeetingRoomDto Room { get; set; } = null!;
     }
 }

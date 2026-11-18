@@ -60,7 +60,9 @@ namespace MeetingRoomReservation.Tests.Unit.Users
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                Password = "test-password"
+                UserName = email,
+                NormalizedUserName = email.ToUpperInvariant(),
+                NormalizedEmail = email.ToUpperInvariant()
             };
         }
     }
